@@ -1,9 +1,10 @@
 import requests
 import json
+import numpy as np
 
 url = 'http://challenge.code2040.org/api/prefix'
 
-submitUrl = 'http://challenge.code2040.org/api/haystack/validate'
+submitUrl = 'http://challenge.code2040.org/api/prefix/validate'
 
 temp = {
 	'token':'b622fb971a3ca781b60c8af66f68fe57'
@@ -16,15 +17,22 @@ jsonData = resp.text
 jsonToPython = json.loads(jsonData)
 
 prefix = jsonToPython['prefix']
-array = jsonToPython['array']
+arrayWithOutPrefix = jsonToPython['array']
 
 #finalList = [prefix for prefix in array if not determine(prefix)]
 
-print array
-for array in array : array.remove(prefix)
+print jsonToPython['array']
 
-print prefix
-print array
+for word in arrayWithOutPrefix[:]:
+	if word.startswith(prefix):
+		arrayWithOutPrefix.remove(word)
+
+#print prefix
+#print arrayWithOutPrefix
+
+
+#myArray = np.asarray(arrayWithOutPrefix)
+#print myArray
 
 #indexOfMatchingWord = array.index(jsonToPython[''])
 
@@ -37,13 +45,17 @@ for u in jsonToPython:
 
 print(jsonToPython['haystack'])
 """
-"""
+encoded_str = json.dumps(arrayWithOutPrefix)
+headers = {'content-type': 'application/json'}
+tok = 'b622fb971a3ca781b60c8af66f68fe57'
 postReverseString = {
-	'token':'b622fb971a3ca781b60c8af66f68fe57',
-	'needle': indexOfMatchingWord
+	'token': tok,
+	'array': arrayWithOutPrefix
 	}
 
-resp = requests.post(submitUrl, data = postReverseString)
+print('-----------')
+print postReverseString
 
+resp = requests.post(submitUrl, data = json.dumps(postReverseString))
 print (resp.text)
-"""
+
