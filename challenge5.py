@@ -1,10 +1,14 @@
 import requests
 import json
 import numpy as np
+import datetime
+from datetime import datetime, timedelta
+from dateutil import parser
+import dateutil.parser as dp
 
 url = 'http://challenge.code2040.org/api/dating'
 
-submitUrl = 'http://challenge.code2040.org/api/prefix/validate'
+submitUrl = 'http://challenge.code2040.org/api/dating/validate'
 
 temp = {
 	'token':'b622fb971a3ca781b60c8af66f68fe57'
@@ -25,6 +29,20 @@ print('----------------')
 
 print datestamp
 print interval
+
+parsed_t = dp.parse(datestamp)
+t_in_seconds = parsed_t.strftime('%s')
+totaSeconds = int(t_in_seconds) + int(interval)
+
+#finalTime = datetime.datetime.isoformat(secondsInStringFormat)
+
+#dt = parser.parse(datestamp,'%Y-%m-%dT%H:%M:%S.%fZ')
+
+#dt = datetime(int(datestamp))
+date_object = datetime.strptime(datestamp, '%Y-%m-%dT%H:%M:%SZ')
+
+print date_object + timedelta(seconds = int(interval))
+
 
 #testing
 """
