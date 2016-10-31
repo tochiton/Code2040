@@ -6,57 +6,47 @@ from datetime import datetime, timedelta
 from dateutil import parser
 import dateutil.parser as dp
 
+# Code 2040 challenge #4 Reverse String
+# Author: Doanh Tran(Tochi
+
 url = 'http://challenge.code2040.org/api/dating'
 
 submitUrl = 'http://challenge.code2040.org/api/dating/validate'
 
 temp = {
-	'token':'b622fb971a3ca781b60c8af66f68fe57'
+	'token':'key'
 	}
 
 resp = requests.post(url, data = temp)
 
-print (resp.text)
 jsonData = resp.text
 jsonToPython = json.loads(jsonData)
-
+# get the data from the Json object
 datestamp = jsonToPython['datestamp']
 interval = jsonToPython['interval']
 
-#finalList = [prefix for prefix in array if not determine(prefix)]
-
-print('----------------')
-
-print datestamp
-print interval
-
+# parse the string in the following format
 parsed_t = dp.parse(datestamp)
 t_in_seconds = parsed_t.strftime('%s')
 totaSeconds = int(t_in_seconds) + int(interval)
 
-#finalTime = datetime.datetime.isoformat(secondsInStringFormat)
-
-#dt = parser.parse(datestamp,'%Y-%m-%dT%H:%M:%S.%fZ')
-
-#dt = datetime(int(datestamp))
 date_object = datetime.strptime(datestamp, '%Y-%m-%dT%H:%M:%SZ')
 
-print date_object + timedelta(seconds = int(interval))
+add = date_object + timedelta(seconds = int(interval))
 
+addedtime = str(add)
 
-#testing
-"""
-encoded_str = json.dumps(arrayWithOutPrefix)
+temptime = addedtime + "Z"
+
+another = temptime.replace(" ", 'T')
+
 headers = {'content-type': 'application/json'}
 
 postReverseString = {
-	'token':'b622fb971a3ca781b60c8af66f68fe57',
-	'array': arrayWithOutPrefix
+	'token':'key',
+	'datestamp': another
 	}
 
-print('-----------')
-print postReverseString
-
-resp = requests.post(submitUrl, data = json.dumps(postReverseString))
+resp = requests.post(submitUrl, data = postReverseString)
 print (resp.text)
-"""
+

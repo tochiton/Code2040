@@ -1,6 +1,7 @@
 import requests
 import json
 import numpy as np
+from json import dumps
 
 url = 'http://challenge.code2040.org/api/prefix'
 
@@ -18,12 +19,9 @@ jsonToPython = json.loads(jsonData)
 
 prefix = jsonToPython['prefix']
 arrayWithOutPrefix = jsonToPython['array']
-#print arrayWithOutPrefix
 print ("-----------------")
+#print arrayWithOutPrefix
 
-#finalList = [prefix for prefix in array if not determine(prefix)]
-
-#print jsonToPython['array']
 
 for word in arrayWithOutPrefix[:]:
 	if word.startswith(prefix):
@@ -31,19 +29,20 @@ for word in arrayWithOutPrefix[:]:
 
 myArray = np.asarray(arrayWithOutPrefix)
 
-encodedArray = json.dumps(myArray)
+#print myArray
 
- 
+
+
 postReverseString = {
-	"token":"b622fb971a3ca781b60c8af66f68fe57",
-	"array": myArray
+	'token':'b622fb971a3ca781b60c8af66f68fe57',
+	'array': arrayWithOutPrefix
 	}
-
+headers = {'Content-Type': 'application/json', 'Accept':'application/json'}
 #encoded_str = json.dumps(postReverseString)
-
+encodedArray = json.dumps(postReverseString, separators=(',', ':'))
 print('-----------')
-print postReverseString
+print encodedArray
 
-resp = requests.post(submitUrl, data= json.dumps(postReverseString))
+resp = requests.post(submitUrl, data = encodedArray, headers = headers)
 print (resp.text)
 
